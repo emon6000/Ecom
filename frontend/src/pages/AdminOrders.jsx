@@ -20,7 +20,7 @@ const AdminOrders = () => {
     try {
       setLoading(true);
       setLoadError(false);
-      const { data } = await axios.get('http://localhost:5000/api/orders');
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders`);
       setOrders(data);
     } catch (error) {
       console.error('Failed to fetch orders', error);
@@ -39,7 +39,7 @@ const AdminOrders = () => {
     setOrders((prev) => prev.map((o) => (o._id === id ? { ...o, status: newStatus } : o)));
 
     try {
-      await axios.put(`http://localhost:5000/api/orders/${id}/status`, { status: newStatus });
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/orders/${id}/status`, { status: newStatus });
     } catch (error) {
       console.error('Failed to update status', error);
       alert('Failed to update order status. Reverting.');

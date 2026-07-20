@@ -29,7 +29,7 @@ const AdminProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/products');
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
       setProducts(data);
     } catch (error) {
       console.error('Error fetching products', error);
@@ -50,7 +50,7 @@ const AdminProducts = () => {
     setUploading(true); 
     try {
       const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-      const { data } = await axios.post('http://localhost:5000/api/upload', formData, config);
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/upload`, formData, config);
       setImages(data);
       setUploading(false); 
     } catch (error) {
@@ -106,10 +106,10 @@ const AdminProducts = () => {
       };
 
       if (editMode) {
-        await axios.put(`http://localhost:5000/api/products/${editProductId}`, productData, config);
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/products/${editProductId}`, productData, config);
         setMessage('Product updated successfully!');
       } else {
-        await axios.post('http://localhost:5000/api/products', productData, config);
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, productData, config);
         setMessage('Product added successfully!');
       }
 
@@ -128,7 +128,7 @@ const AdminProducts = () => {
     if (window.confirm('Are you sure you want to permanently delete this product?')) {
       try {
         const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-        await axios.delete(`http://localhost:5000/api/products/${id}`, config);
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/products/${id}`, config);
         fetchProducts(); 
       } catch (error) {
         alert(error.response?.data?.message || 'Failed to delete product');

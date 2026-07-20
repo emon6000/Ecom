@@ -26,12 +26,12 @@ const ProductDetails = () => {
     const fetchProductData = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
         setProduct(data);
         setMainImage(data.images && data.images.length > 0 ? data.images[0] : '');
         setQty(1);
 
-        const allProductsRes = await axios.get('http://localhost:5000/api/products');
+        const allProductsRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
         const related = allProductsRes.data
           .filter((p) => p.category === data.category && p._id !== data._id && !p.isHidden)
           .slice(0, 4);
