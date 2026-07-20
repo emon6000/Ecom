@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   // Login Action
   const login = async (email, password) => {
     // Note: Ensure this matches your actual backend login route!
-    const { data } = await axios.post('${import.meta.env.VITE_API_URL}/api/users/login', {
+    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, {
       email,
       password,
     });
