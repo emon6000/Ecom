@@ -1,0 +1,51 @@
+/* Navbar.css */
+.navbar {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: var(--text-dark, #fff);
+  font-weight: bold;
+}
+
+.navbar .nav-link {
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #4ade80 !important;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.7);
+}
+
+.cart-badge {
+  background: var(--primary-color, #3b82f6);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  margin-left: 5px;
+}
+
+/* Tablet & Mobile: Hide text links to save space */
+@media (max-width: 900px) {
+  .nav-link {
+    display: none;
+  }
+}
+
+/* Mobile: Shrink search bar and adjust padding */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 10px 15px !important;
+  }
+
+  .brand-text {
+    display: none; /* Hide 'MAGIC SHOP' text on small phones to prevent crowding */
+  }
+
+  .search-container {
+    max-width: 150px !important;
+  }
+}

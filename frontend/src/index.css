@@ -1,0 +1,44 @@
+/* index.css
+   This replaces Vite's default template CSS, which sets `display:flex` and
+   `place-items:center` on <body>. That makes #root shrink-wrap to its content
+   instead of stretching to fill the viewport — this is what was causing your
+   whole app to appear squeezed into a narrow column with empty space on the
+   right on both desktop and mobile. */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #1a73e8;
+  --text-dark: #111827;
+  --bg-light: #f7f7fb;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
