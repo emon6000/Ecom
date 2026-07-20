@@ -4,6 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import './Checkout.css';
 
+// Same discount logic used in Cart.jsx — kept identical so the price shown
+// here always matches what the customer saw in their cart.
+const getEffectivePrice = (item) => {
+  const basePrice = Number(item.price || 0);
+  const discount = Number(item.discount || 0);
+
+  if (discount > 0) {
+    return basePrice - basePrice * (discount / 100);
+  }
+
+  return basePrice;
+};
+
 const Checkout = () => {
   const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
@@ -18,8 +31,10 @@ const Checkout = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  // FIX: was using item.price (original price), ignoring item.discount.
+  // Now uses the same effective (discounted) price as the Cart page.
   const cartTotal = cartItems.reduce(
-    (acc, item) => acc + Number(item.price || 0) * Number(item.qty || 0),
+    (acc, item) => acc + getEffectivePrice(item) * Number(item.qty || 0),
     0
   );
 
@@ -38,11 +53,13 @@ const Checkout = () => {
     setLoading(true);
     setError(null);
 
+    // FIX: send the discounted price per item, not the original price,
+    // so the order stored in the backend matches what the customer agreed to pay.
     const orderItems = cartItems.map((item) => ({
       product: item._id,
       name: item.name,
       qty: item.qty,
-      price: Number(item.price || 0),
+      price: getEffectivePrice(item),
       image:
         item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/150',
     }));
@@ -143,14 +160,25 @@ const Checkout = () => {
         <div className="checkout-summary">
           <h3>Order Summary</h3>
           <div className="summary-items">
-            {cartItems.map((item) => (
-              <div key={item._id} className="summary-item">
-                <span>
-                  {item.qty}x {item.name}
-                </span>
-                <span>৳{(Number(item.price || 0) * Number(item.qty || 0)).toFixed(2)}</span>
-              </div>
-            ))}
+            {cartItems.map((item) => {
+              const effectivePrice = getEffectivePrice(item);
+              const hasDiscount = Number(item.discount || 0) > 0;
+              return (
+                <div key={item._id} className="summary-item">
+                  <span>
+                    {item.qty}x {item.name}
+                  </span>
+                  <span>
+                    {hasDiscount && (
+                      <span className="summary-old-price">
+                        ৳{(Number(item.price || 0) * Number(item.qty || 0)).toFixed(2)}
+                      </span>
+                    )}
+                    ৳{(effectivePrice * Number(item.qty || 0)).toFixed(2)}
+                  </span>
+                </div>
+              );
+            })}
           </div>
           <div className="summary-total">
             <span>Total to pay upon delivery:</span>
